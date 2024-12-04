@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.1)
+
+set(PROJ main)
+project(${PROJ})
+
+add_executable(${PROJ} main.cpp)
