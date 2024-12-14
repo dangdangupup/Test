@@ -1,5 +1,12 @@
 """
     测试：图片修正
+    TODO: 从图像中自动识别角点，并对齐
+        (1) 桶形畸变中，可以一层层展开凸包, 可以实现精准对位
+            不足: 如果点确实的话，会导致错误;
+            改进: 可以直接对凸包进行曲线拟合，进行修正？？
+        (2) 利用算法对齐， 需要设计相应的优化算法？？？
+            - 匈牙利匹配法
+            - ICP 估计不行，因为畸变太大，或者把畸变同时考虑进来进行凸优化？？？
 """
 
 # =====================================
@@ -42,10 +49,11 @@ def get_ref_point(img_path):
     while True:
         out_data = np.copy(org_data)
 
-        # - 自动获取角点，不够精准
-        # kps = cv2.goodFeaturesToTrack(out_data, 10000, qualityLevel=0.01, minDistance=10, blockSize=3))
-        # d = cv2.cornerSubPix(out_data, np.copy(kps), (5,5), (-1, -1), None)
+        # # - 自动获取角点，不够精准
+        # kps = cv2.goodFeaturesToTrack(out_data, 10000, qualityLevel=0.01, minDistance=10, blockSize=3)
+        # kps = cv2.cornerSubPix(out_data, np.copy(kps), (5,5), (-1, -1), None)
         # kps = kps.reshape(-1, 2)
+        # out_data = draw_keypoint(out_data, kps)
 
         out_data = draw_keypoint(out_data, data_list)
 
@@ -195,7 +203,7 @@ if __name__ == '__main__':
     target = 'bw'
     img_path = f'/Users/ed/Data/Image/{target}_fisheye.png'
     keypoint_path = f'keypoint_{target}.txt'
-    # get_ref_point(img_path=img_path)
-    main(img_path, keypoint_path)
+    get_ref_point(img_path=img_path)
+    # main(img_path, keypoint_path)
 
 
